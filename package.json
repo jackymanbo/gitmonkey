@@ -1,0 +1,31 @@
+{
+  "name": "gitmonkey",
+  "version": "1.0.0",
+  "description": "",
+  "main": "linebot.js",
+  "dependencies": {
+    "express": "^4.15.4",
+    "hilink": "^0.0.1",
+    "hilinkhuawei": "^2.0.0",
+    "iconv-lite": "^0.4.17",
+    "linebot": "^1.3.0",
+    "mpg123": "^0.2.3",
+    "net": "^1.0.2",
+    "request": "^2.81.0",
+    "xml2js": "^0.4.17"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jackymanbo/gitmonkey.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jackymanbo/gitmonkey/issues"
+  },
+  "homepage": "https://github.com/jackymanbo/gitmonkey#readme"
+}
