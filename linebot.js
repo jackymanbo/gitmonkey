@@ -1,24 +1,42 @@
-var linebot = require('linebot');
-var express = require('express');
+const line = require('node-line-bot-api')
+const express = require('express')
+const bodyParser = require('body-parser')
+const app = express()
 
-var bot = linebot({
-  channelId: '1531798185',
-  channelSecret: 'f0759fd2cfdc572eb73688a6cb311b24',
-  channelAccessToken: 'FNuFKN3CCpcWPP9R+9Kl/Bw+Csg5jv1wval3vYt7Mr8Dhlx2nQ/pkiYj0iwQd+O9ucybITPTOAk2zkJ1bgUb18FEeF8oCn+rFdlJ4fsFdE32FQ25TGV25ii00mJ+goR4XMlf+cA5b691L45jL3eS9gdB04t89/1O/w1cDnyilFU='
+// need raw buffer for signature validation
+app.use(bodyParser.json({
+  verify(req, res, buf) {
+    req.rawBody = buf
+  }
+}))
+
+// init with auth
+line.init({
+  accessToken: 'FNuFKN3CCpcWPP9R+9Kl/Bw+Csg5jv1wval3vYt7Mr8Dhlx2nQ/pkiYj0iwQd+O9ucybITPTOAk2zkJ1bgUb18FEeF8oCn+rFdlJ4fsFdE32FQ25TGV25ii00mJ+goR4XMlf+cA5b691L45jL3eS9gdB04t89/1O/w1cDnyilFU=',
+  // (Optional) for webhook signature validation
+  channelSecret: 'f0759fd2cfdc572eb73688a6cb311b24'
+})
+
+app.post('/webhook/', line.validator.validateSignature(), function (req, res, next) {
+  // get content from request body
+  var promises = req.body.events.map(function (event) {
+    // reply message
+    console.log(event);
+    return line.client.replyMessage({
+      replyToken: event.replyToken,
+      messages: [{
+        type: 'text',
+        text: event.message.text
+      }]
+    });
+  });
+  Promise.all(promises).then(function () {
+    return res.json({
+      success: true
+    });
+  });
 });
 
-bot.on('message', function (event) {
-  console.log(event); //把收到訊息的 event 印出來看看
-});
-
-const app = express();
-const linebotParser = bot.parser();
-app.post('/', linebotParser);
-
-//因為 express 預設走 port 3000，而 heroku 上預設卻不是，要透過下列程式轉換
-var server = app.listen(process.env.PORT || 8080, function () {
-  var port = server.address().port;
-  console.log("App now running on port", port);
-});
-
-bot.listen('/linewebhook', 3000);
+app.listen(process.env.PORT || 3000, () => {
+  console.log('Example app listening on port 3000!')
+})
