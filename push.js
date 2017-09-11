@@ -9,9 +9,9 @@ line.init({
 
 // simple push message with user MID
 line.client.pushMessage({
-    to: 'C9109529bb65f9f03a4fe5ce914f07054',
+    to: 'C353620a5bb6738bb2a7bc00465780a86',
     messages: [{
         "type": "text",
-        "text": "Hello, world1"
+        "text": "超級賽亞人嗎?"
     }]
 })
